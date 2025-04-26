@@ -2,14 +2,15 @@ import numpy as np
 import argparse
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+np.random.seed(7)
 def Plot(Y, mean, var, n, title):
     sigma = np.sqrt(var / n)
     x = np.linspace(min(Y), max(Y), 1000)
     pdf = norm.pdf(x, mean, sigma)
 
     plt.figure(figsize=(8, 5))
-    plt.hist(Y, bins=int(np.sqrt(n)), density=True, alpha=0.6, color='skyblue', label='Histogram of Sample Means') #density simulates pdf ie area under graph is 1
-    plt.plot(x, pdf, 'r-', linewidth=2, label=f"PDF of Normal($\mu$={mean:.3f}, $\sigma^2$={var:.3f}/n)")
+    plt.hist(Y, bins=int(np.sqrt(n)), density=True, alpha=0.6, color='skyblue', label='Histogram of Sample Means',edgecolor='black') #density simulates pdf ie area under graph is 1
+    plt.plot(x, pdf, 'r-', linewidth=2, label=f"PDF of Normal($\mu$={mean:.3f}, $\sigma^2$={var/n:.3f})")
     plt.title(title)
     plt.xlabel('Sample Mean')
     plt.ylabel('Density')
@@ -34,10 +35,10 @@ def Uniform(N,n):
     Plot(Y, mean, var, n, f'Uniform (0,1)') 
     return Y
 def Exponential(N,n,l):
-    expo=np.random.exponential(size=(N,n),scale=l)          
+    expo=np.random.exponential(size=(N,n),scale=1/l)          
     Y=np.mean(expo,axis=1)
-    mean = l
-    var = (l**2)   
+    mean = 1/l
+    var = 1/(l**2)   
     Plot(Y, mean, var, n, f'Exponential ($\lambda$={l})') 
     return Y
 parser = argparse.ArgumentParser(description="Generate random samples based on mode and parameters.")

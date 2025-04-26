@@ -25,7 +25,7 @@ for n in range(1, N + 1):
     est= ((mean0 / var0) + np.sum(Y / vari))/((1 / var0) + np.sum(1 / vari))
     mmse.append(est)
 plt.figure(figsize=(8, 6))
-plt.plot(range(1, N + 1), mmse)
+plt.scatter(range(1, N + 1), mmse,color='blue',alpha=0.5)
 plt.xlabel('Number of Samples (N)')
 plt.ylabel('MMSE Estimate')
 plt.title('MMSE Estimates vs Number of Samples')

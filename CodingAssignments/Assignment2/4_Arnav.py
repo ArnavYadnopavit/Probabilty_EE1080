@@ -8,9 +8,11 @@ parser = argparse.ArgumentParser(description="Generate jointly Gaussian vectors"
 parser.add_argument("mean1", type=float, help="Mean of first variable")
 parser.add_argument("mean2", type=float, help="Mean of second variable")
 parser.add_argument("var1", type=float, help="Variance of first variable")
-parser.add_argument("var2", type=float, help="Variance of second variable")
 parser.add_argument("cov12", type=float, help="Covariance between variables")
 parser.add_argument("cov21", type=float, help="Covariance (should be same as cov12)")
+parser.add_argument("var2", type=float, help="Variance of second variable")
+
+
 parser.add_argument("N", type=int, help="Number of samples to generate")
 
 args = parser.parse_args()
@@ -37,6 +39,8 @@ else:
 samples_builtin = np.random.multivariate_normal(mean, cov_matrix, args.N)
 
 D_vals, U = eig(cov_matrix)
+D_vals=D_vals[::-1]
+U=U[:,::-1]
 D = np.diag(D_vals)
 sqrt_D = np.sqrt(D)
 A = U @ sqrt_D
@@ -46,7 +50,7 @@ samples_manual = A @ S + mean.reshape(2, 1)
 
 def plot_samples(samples, title):
     x, y = samples[0, :], samples[1, :]
-    plt.scatter(x, y, alpha=0.5, label='Samples')
+    plt.scatter(x, y, alpha=0.5, label='Samples',)
 
     x1, x2 = np.mgrid[-4:4:.01, -4:4:.01]
     pos = np.dstack((x1, x2))
@@ -54,10 +58,10 @@ def plot_samples(samples, title):
     plt.contour(x1, x2, rv.pdf(pos), colors='red')
 
     plt.plot(mean[0], mean[1], 'ko', label='Mean')
-    max_ev_index = np.argmax(D_vals)
-    u1 = U[:, max_ev_index]
+    u1 = U[:, 0]
+    u2 = U[:, 1]
     plt.quiver(mean[0], mean[1], u1[0], u1[1], angles='xy', scale_units='xy', scale=1, color='green', label='Eigenvector u1')
-    
+    plt.quiver(mean[0], mean[1], u2[0], u2[1], angles='xy', scale_units='xy', scale=1, color='red', label='Eigenvector u2')
     plt.title(title)
     plt.axis('equal')
     plt.legend()

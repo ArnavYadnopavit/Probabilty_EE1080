@@ -14,16 +14,16 @@ def Plot(samples,N):
     mse_fa = np.mean((hist_vals - fa)**2)
     mse_fb = np.mean((hist_vals - fb)**2)
     if mse_fa < mse_fb:
-        print("a")
+        print("It is close to a")
     else:
-        print("b")
+        print("It is close to b")
     x=np.linspace(0,1,N)
-    fa=60*(x**3)*((1-x)**2)
-    fb=30*(x**4)*(1-x)
+    ffa=60*(x**3)*((1-x)**2)
+    ffb=30*(x**4)*(1-x)
     plt.figure(figsize=(8, 5))
-    plt.hist(samples, bins=bins, density=True, alpha=0.6, color='skyblue', label='Histogram of Sample Means') #density simulates pdf ie area under graph is 1
-    plt.plot(x,fa,label="fa")
-    plt.plot(x,fb,label="fb")
+    plt.hist(samples, bins=bins, density=True, alpha=0.6, color='skyblue', label='Histogram of Sample Means',edgecolor='black') #density simulates pdf ie area under graph is 1
+    plt.plot(x,ffa,label="fa")
+    plt.plot(x,ffb,label="fb")
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
